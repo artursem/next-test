@@ -13,3 +13,11 @@ test('Band componbent displays correct band info', async () => {
 
 	// image, description, link
 });
+
+test('Band component displays error', () => {
+	render(<BandPage band={null} error='404' />);
+	const newError = screen.getByRole('heading', {
+		name: /could not retrieve band data: 404/i,
+	});
+	expect(newError).toBeInTheDocument();
+});
