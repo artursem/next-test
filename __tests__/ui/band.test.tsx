@@ -11,7 +11,7 @@ test('Band componbent displays correct band info', async () => {
 	});
 	expect(heading).toBeInTheDocument();
 
-	// image, description, link
+	// test image, description, link
 });
 
 test('Band component displays error', () => {
