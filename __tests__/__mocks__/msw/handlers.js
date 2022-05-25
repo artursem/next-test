@@ -16,11 +16,19 @@ export const handlers = [
 		const { showId } = req.params;
 		return res(ctx.json({ show: fakeShows[Number(showId)] }));
 	}),
-	rest.get('http://localhost:3000/api/users/:userId/reservations', (req, res, ctx) =>
-		res(
+	rest.get('http://localhost:3000/api/users/:userId/reservations', (req, res, ctx) => {
+		const { userId } = req.params;
+		if (userId === 0) {
+			return res(
+				ctx.json({
+					userReservations: [],
+				})
+			);
+		}
+		return res(
 			ctx.json({
 				userReservations: fakeUserReservations,
 			})
-		)
-	),
+		);
+	}),
 ];
