@@ -1,15 +1,18 @@
 {
   "private": true,
   "scripts": {
-    "db:reset": "source scripts/reset-db.sh",
+    "db:reset": "cp -r __tests__/__mocks__/fakeData/json/*.json __tests__/__mocks__/db",
     "dev": "next dev",
     "lint": "next lint",
     "build": "next build",
-    "build:test": "npm db:reset && export NODE_ENV=\"test\" && next build",
+    "build:test": "npm run db:reset && export NODE_ENV=\"test\" && next build",
     "start": "next start",
     "start:test": "export NODE_ENV=\"test\" && next start",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "cypress:open": "env-cmd -f .env.test.local npx cypress open",
+    "cypress:start": "start-server-and-test 'npm run start:test' 3000 'npm run cypress:open' ",
+    "cypress:build": "npm run build:test && npm run cypress:start"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.6",
@@ -52,11 +55,13 @@
     "@typescript-eslint/parser": "^5.15.0",
     "babel-jest": "27.4.5",
     "cypress": "^9.7.0",
+    "env-cmd": "^10.1.0",
     "eslint": "8.5.0",
     "eslint-config-next": "^12.1.0",
     "eslint-plugin-testing-library": "^5.0.1",
     "jest": "27.4.5",
     "msw": "^0.41.0",
+    "start-server-and-test": "^1.14.0",
     "typescript": "4.5.4",
     "typescript-eslint": "^0.0.1-alpha.0"
   }
