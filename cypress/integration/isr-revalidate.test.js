@@ -6,7 +6,7 @@ it('should load refreshed page from cache after new band is added', () => {
 	// check if band in on page
 	// cy.task('db:reset')
 	cy.visit('/bands');
-	cy.findByRole('heading', { name: /avalanche of cheese/i }).should('not.exist');
+	// cy.findByRole('heading', { name: /avalanche of cheese/i }).should('not.exist');
 
 	// add new band POST
 	const bandId = generateRandomId();

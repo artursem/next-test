@@ -1,19 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from "@testing-library/react";
 
-import { Reservation } from '@/components/reservations/Reservation';
+import { Reservation } from "@/components/reservations/Reservation";
 
-test('Component shows correct number of seats', async () => {
-	render(<Reservation showId={0} submitPurchase={jest.fn()} />);
+test("reservation page shows correct number of available seats", async () => {
+  render(<Reservation showId={0} submitPurchase={jest.fn()} />);
 
-	const seatCount = await screen.findByText(/10 seats left/i);
-	expect(seatCount).toBeInTheDocument();
+  const seatCountText = await screen.findByText(/10 seats left/i);
+  expect(seatCountText).toBeInTheDocument();
 });
 
-test('reservation page shows "sold out" message and NO button if no seats available', async () => {
-	render(<Reservation showId={1} submitPurchase={jest.fn()} />);
-	const soldOut = await screen.findByText(/sold out/i);
-	const purchaseButton = screen.queryByRole('button', { name: /purchase/i });
+test("reservation page shows 'sold out' message and NO purchase button if there are no seats available", async () => {
+  render(<Reservation showId={1} submitPurchase={jest.fn()} />);
 
-	expect(soldOut).toBeInTheDocument();
-	expect(purchaseButton).not.toBeInTheDocument();
+  const soldOutMessage = await screen.findByRole("heading", {
+    name: /sold out/i,
+  });
+  expect(soldOutMessage).toBeInTheDocument();
+
+  const purchaseButton = screen.queryByRole("button", { name: /purchase/i });
+  expect(purchaseButton).not.toBeInTheDocument();
 });

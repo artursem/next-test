@@ -1,34 +1,25 @@
-import { rest } from 'msw';
-import { fakeUserReservations } from '../fakeData/userReservations';
-import { readFakeData } from '@/__tests__/__mocks__/fakeData';
+import { rest } from "msw";
+
+import { readFakeData } from "@/__tests__/__mocks__/fakeData";
+import { fakeUserReservations } from "@/__tests__/__mocks__/fakeData/userReservations";
 
 export const handlers = [
-	// rest.get('http://localhost:3000/api/shows/:showId', async (req, res, ctx) => {
-	// 	const { fakeShows } = await readFakeData();
-	// 	return res(ctx.json({ show: fakeShows[0] }));
-	// }),
+  rest.get("http://localhost:3000/api/shows/:showId", async (req, res, ctx) => {
+    const { fakeShows } = await readFakeData();
+    const { showId } = req.params;
 
-	// showId = 0 has seats available
-	// showId = 1 is sold out
+    // index / showId = 0 has seats available in fake data
+    // index / showId = 1 has NO seats available
+    return res(ctx.json({ show: fakeShows[Number(showId)] }));
+  }),
+  rest.get(
+    "http://localhost:3000/api/users/:userId/reservations",
+    (req, res, ctx) => {
+      const { userId } = req.params;
 
-	rest.get('http://localhost:3000/api/shows/:showId', async (req, res, ctx) => {
-		const { fakeShows } = await readFakeData();
-		const { showId } = req.params;
-		return res(ctx.json({ show: fakeShows[Number(showId)] }));
-	}),
-	rest.get('http://localhost:3000/api/users/:userId/reservations', (req, res, ctx) => {
-		const { userId } = req.params;
-		if (userId === 0) {
-			return res(
-				ctx.json({
-					userReservations: [],
-				})
-			);
-		}
-		return res(
-			ctx.json({
-				userReservations: fakeUserReservations,
-			})
-		);
-	}),
+      // return fakeUserReservations if userId is 1; empty array otherwise
+      const userReservations = Number(userId) === 1 ? fakeUserReservations : [];
+      return res(ctx.json({ userReservations }));
+    }
+  ),
 ];

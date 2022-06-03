@@ -1,20 +1,26 @@
-import { screen, render } from '@testing-library/react';
+import { render, screen } from "@testing-library/react";
 
-import { UserReservations } from '@/components/user/UserReservations';
+import { UserReservations } from "@/components/user/UserReservations";
 
-test('component displays correct button', async () => {
-	render(<UserReservations userId={1} />);
-	const purchaseButton = await screen.findByText(/purchase more tickets/i);
-	expect(purchaseButton).toBeInTheDocument();
+test("Displays reservations and 'purchase more' button when reservations exist", async () => {
+  render(<UserReservations userId={1} />);
+
+  const purchaseButton = await screen.findByRole("button", {
+    name: /purchase more tickets/i,
+  });
+  expect(purchaseButton).toBeInTheDocument();
 });
 
-test('component shows `purchase tickets` button if no reservations', async () => {
-	render(<UserReservations userId={0} />);
-	const purchaseMoreButton = screen.queryByText(/purchase more tickets/i);
-	const yourTickets = screen.queryByRole('heading', { name: /your tickets/i });
-	const purchaseButton = await screen.findByText(/purchase tickets/i);
+test("Displays no reservations and 'purchase' button when no reservations exist", async () => {
+  render(<UserReservations userId={0} />);
 
-	expect(purchaseMoreButton).not.toBeInTheDocument();
-	expect(yourTickets).not.toBeInTheDocument();
-	expect(purchaseButton).toBeInTheDocument();
+  const purchaseButton = await screen.findByRole("button", {
+    name: /purchase tickets/i,
+  });
+  expect(purchaseButton).toBeInTheDocument();
+
+  const ticketsHeading = screen.queryByRole("heading", {
+    name: /your tickets/i,
+  });
+  expect(ticketsHeading).not.toBeInTheDocument();
 });
