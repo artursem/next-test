@@ -93,3 +93,13 @@ it('redirects to sign in for protected pages', () => {
 		});
 	});
 });
+
+it('does not show the sign in page when already signed in', () => {
+	cy.task('db:reset').signIn(Cypress.env('TEST_USER_EMAIL'), Cypress.env('TEST_PASSWORD'));
+
+	// go to reservations
+	cy.visit('/reservations/0');
+	cy.findByRole('button', { name: /sign in/i }).should('not.exist');
+	cy.findByRole('heading', { name: /sign in/i }).should('not.exist');
+	cy.findByRole('button', { name: /purchase/i }).should('exist');
+});
