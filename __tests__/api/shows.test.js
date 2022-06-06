@@ -28,7 +28,10 @@ test('GET /api/shows/[showid] returns the data for the correct show ID', async (
 		test: async ({ fetch }) => {
 			const res = await fetch({ method: 'GET' });
 			expect(res.status).toBe(200);
+
 			const json = await res.json();
+			const { fakeShows } = await readFakeData();
+			expect(json).toEqual({ show: fakeShows[0] });
 		},
 	});
 });
