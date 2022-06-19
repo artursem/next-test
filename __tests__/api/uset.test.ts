@@ -53,7 +53,7 @@ test('GET /api/user/[userId]/reservations returns no reservations for user with 
 		handler: userReservationsHandler,
 		paramsPatcher: (params) => {
 			// eslint-disable-next-line no-param-reassign
-			params.userId = 12345;
+			params.userId = 12345; // user with no reservations
 		},
 		test: async ({ fetch }) => {
 			const res = await fetch({ method: 'GET' });
